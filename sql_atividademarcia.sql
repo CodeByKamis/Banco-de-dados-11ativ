@@ -132,10 +132,9 @@ SELECT
 FROM leitores
 CROSS JOIN livros;
 
--- UNION: Mostre todos os nomes de autores e nomes de editoras numa única coluna.
+-- ************************* UNION: Mostre todos os nomes de autores e nomes de editoras numa única coluna. ****************************************
 SELECT
-	autores.nome_autor AS Autores,
-    editoras.nome_editora As Editoras
+	autores.nome_autor AS Autores
 FROM livros
 LEFT JOIN autores ON autores.id_autor = livros.id_autor
 LEFT JOIN editoras ON editoras.id_editora = livros.id_editora
@@ -143,7 +142,6 @@ LEFT JOIN editoras ON editoras.id_editora = livros.id_editora
 UNION
 -- right pois quero as editoras
 SELECT
-	autores.nome_autor AS Autores,
     editoras.nome_editora As Editoras
 FROM livros
 RIGHT JOIN editoras ON editoras.id_editora = livros.id_editora
@@ -174,10 +172,19 @@ RIGHT JOIN editoras ON livros.id_editora = editoras.id_editora;
 
 -- Liste todos os leitores e os livros que eles pegaram emprestado, se houver.
 SELECT
+	emprestimos.data AS Emprestimo,
     leitores.nome_leitor AS Leitor,
 	livros.titulo As Livro
-
+    
 FROM emprestimos_leitores
 INNER JOIN leitores ON leitores.id_leitor = emprestimos_leitores.id_leitor
-INNER JOIN emprestimos ON emprestimos.id_empresimo = emprestimos_leitores.id_livro;
+INNER JOIN emprestimos ON emprestimos.id_emprestimo = emprestimos_leitores.id_emprestimo
+INNER JOIN livros ON emprestimos.id_livro = livros.id_livro;
+
+
 -- Mostre os nomes de todos os autores e os títulos de seus livros. Inclua também autores que ainda não têm livros cadastrados.
+SELECT
+	autores.nome_autor AS Autor,
+    livros.titulo AS Livros
+FROM autores
+LEFT JOIN livros ON livros.id_autor = autores.id_autor;
